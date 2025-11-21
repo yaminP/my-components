@@ -1,7 +1,10 @@
+'use client';
+
 import "../styles/globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
+import { SidebarProvider } from "@/contexts/SidebarContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,12 +26,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
       >
-        <Sidebar />
-        <Navbar />
-        <main className="md:ml-64 pt-16 min-h-screen">
-          {children}
-        </main>
+        <SidebarProvider>
+          <Sidebar />
+          <Navbar />
+          <MainContent>{children}</MainContent>
+        </SidebarProvider>
       </body>
     </html>
+  );
+}
+
+function MainContent({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="pt-16 min-h-screen transition-all duration-300">
+      {children}
+    </main>
   );
 }
